@@ -65,10 +65,11 @@
 	//Container for all content in the page
 	var pageContainer = newContainer();
 	
-	//Search box
-	var searchBox = newTextbox();
-	searchBox.properties.value.binding = "todoFilter";
-	pageContainer.views.content.push(searchBox);
+	//Filter box
+	var filterBox = newTextbox();
+	searcfilterBoxhBox.properties.value.binding = "todoFilter";
+	filterBox.properties.placeholder.value = "Filter Todos";
+	pageContainer.views.content.push(filterBox);
 	
 	//The list of todos
 	var todoList = {
