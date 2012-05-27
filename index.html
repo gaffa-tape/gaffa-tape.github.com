@@ -45,6 +45,17 @@
 	        }
 	    }
 	}
+	
+	//DRY up textbox creation
+	function newTextbox(){
+	    return {
+	        type:"textbox",
+	        properties:{
+	            value:{},
+	            placeholder:{}
+	        }
+	    }
+	}
 	    
 	        
 	/////////////////////////////////
@@ -54,13 +65,19 @@
 	//Container for all content in the page
 	var pageContainer = newContainer();
 	
+	//Search box
+	var searchBox = newTextbox();
+	searchBox.properties.value.binding = "todoFilter";
+	pageContainer.views.content.push(searchBox);
+	
 	//The list of todos
 	var todoList = {
 	    type: "list",
 	    binding: "todos",
 	    properties:{
 	        list:{
-	            binding:"~"
+	            binding:"~",
+	            filter:"~%todoFilter"
 	        },
 	        classes:{
 	            value: "todoList"
@@ -101,17 +118,9 @@
 	removeTodoButton.actions.click.push(removeTodoAction);
 	
 	//the input to allow users to add todo labels
-	var newTodoTextbox = {
-	    type:"textbox",
-	    properties:{
-	        value:{
-	            binding:"newItem"
-	        },
-	        placeholder:{
-	            value:"Add Todo"
-	        }
-	    }
-	}
+	var newTodoTextbox = newTextbox();
+	newTodoTextbox.properties.value.binding = "newTodo";
+	newTodoTextbox.properties.placeholder.value = "Todo Description";
 	pageContainer.views.content.push(newTodoTextbox);
 	
 	//the add todo button
@@ -127,7 +136,7 @@
 	            binding:"todos"
 	        },
 	        pushFrom:{
-	            binding:"newItem"
+	            binding:"newTodo"
 	        }
 	    }
 	}
