@@ -135,7 +135,22 @@
 	// END OF VIEW DEFINITION
 	/////////////////////////////////
 	    
-	    
+	window.gaffa.behaviours.add({            
+            type: "modelChange",
+            binding: "todos",
+            actions: [
+                {
+                    type: "store",
+                    location: "local",
+                    path: "stuffModel",
+                    bindings: {
+                        setFrom: {
+                            binding: "todos"
+                        }
+                    }
+                }
+            ]
+        });
 	
 	//add them to gaffa
 	window.gaffa.views.add(pageContainer);
