@@ -138,7 +138,14 @@
 	/////////////////////////////////
 	    
 	    
+	
+	//set the default model
+	window.gaffa.model.set({
+	    todos:["stuff", "things"]
+	});
+	
 	//Add local storage behaviours
+	//Do this after you set model defaults.
 	window.gaffa.behaviours.add([	
 		{            
 	            type: "modelChange",
@@ -174,17 +181,14 @@
 	        }
         ]);
 	
-	//add them to gaffa
+	//add the views to gaffa
 	window.gaffa.views.add(pageContainer);
 	
-	//set the default model
-	window.gaffa.model.set({
-	    todos:["stuff", "things"]
-	});
-	
-	//make gaffa pull model data from the pages queryString
+	//make gaffa pull model data from the page's queryString
 	window.gaffa.queryStringToModel();
 	
+	//wait till there is a body element
+	//if no renderTarget is provided, this is where gaffa will render to.
 	$(document).ready(function(){
 		//render the view
 		window.gaffa.views.render();
