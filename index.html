@@ -135,22 +135,42 @@
 	// END OF VIEW DEFINITION
 	/////////////////////////////////
 	    
-	window.gaffa.behaviours.add({            
-            type: "modelChange",
-            binding: "todos",
-            actions: [
-                {
-                    type: "store",
-                    location: "local",
-                    path: "stuffModel",
-                    bindings: {
-                        setFrom: {
-                            binding: "todos"
-                        }
-                    }
-                }
-            ]
-        });
+	    
+	//Add local storage behaviours
+	window.gaffa.behaviours.add([	
+		{            
+	            type: "modelChange",
+	            binding: "todos",
+	            actions: [
+	                {
+	                    type: "store",
+	                    location: "local",
+	                    path: "todoList",
+	                    bindings: {
+	                        setFrom: {
+	                            binding: "todos"
+	                        }
+	                    }
+	                }
+	            ]
+	        },
+	        {
+	            binding: "todos",
+	            type: "pageLoad",
+	            actions: [
+	                {
+	                    type: "fetch",
+	                    location: "local",
+	                    path: "todoList",
+	                    bindings: {
+	                        setTo: {
+	                            binding: "stuff"
+	                        }
+	                    }
+	                }
+	            ]
+	        }
+        ]);
 	
 	//add them to gaffa
 	window.gaffa.views.add(pageContainer);
