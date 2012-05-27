@@ -1,7 +1,199 @@
 <html>
-	<head>
-	</head>
-	<body>
-		<h1>Gaffa Tape</h1>
-	</body>
-</html>
+    <head>
+        
+        <!-- Add references for jQuery, gaffa, and any gaffa components used -->
+        
+        <!--jQuery-->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        
+        <!--Gaffa-->
+        <script type="text/javascript" src="http://www.korynunn.com/src/gaffa.js"></script>
+        
+        <!--Views-->
+        <script type="text/javascript" src="http://www.korynunn.com/src/views/container.js"></script>
+        <script type="text/javascript" src="http://www.korynunn.com/src/views/list.js"></script>
+        <script type="text/javascript" src="http://www.korynunn.com/src/views/textbox.js"></script>
+        <script type="text/javascript" src="http://www.korynunn.com/src/views/label.js"></script>
+        <script type="text/javascript" src="http://www.korynunn.com/src/views/button.js"></script>
+        
+        <!--Actions-->
+        <script type="text/javascript" src="http://www.korynunn.com/src/actions/push.js"></script>
+        <script type="text/javascript" src="http://www.korynunn.com/src/actions/remove.js"></script>
+        
+        <script type="text/javascript">
+        //DRY up container creation        
+	function newContainer(){
+	    return {
+	        type:"container",
+	        views:{
+	            content:[]
+	        }
+	    }
+	}
+	
+	//DRY up button creation
+	function newButton(){
+	    return {
+	        type:"button",
+	        actions:{
+	            click:[]
+	        },
+	        properties:{
+	            text:{}
+	        }
+	    }
+	}
+	    
+	        
+	/////////////////////////////////
+	// START OF VIEW DEFINITION
+	/////////////////////////////////
+	        
+	//Container for all content in the page
+	var pageContainer = newContainer();
+	
+	//The list of todos
+	var todoList = {
+	    type: "list",
+	    binding: "todos",
+	    properties:{
+	        list:{
+	            binding:"~"
+	        },
+	        classes:{
+	            value: "todoList"
+	        }
+	    }
+	}
+	pageContainer.views.content.push(todoList);
+	
+	//the template view for each todo
+	var todoTemplate = newContainer();
+	todoList.properties.list.template = todoTemplate;
+	
+	//label for the todo
+	var todoLabel = {
+	    type: "label",
+	    properties: {
+	        text: {
+	            binding: "~"
+	        }
+	    }
+	}
+	todoTemplate.views.content.push(todoLabel);
+	
+	//button to remove the todo
+	var removeTodoButton = newButton();
+	removeTodoButton.properties.text.value = "Remove Todo";
+	todoTemplate.views.content.push(removeTodoButton);
+	
+	//the action that removes a todo from the model
+	var removeTodoAction = {
+	    type:"remove",
+	    bindings:{
+	        target:{
+	            binding:"~"
+	        }
+	    }
+	}
+	removeTodoButton.actions.click.push(removeTodoAction);
+	
+	//the input to allow users to add todo labels
+	var newTodoTextbox = {
+	    type:"textbox",
+	    properties:{
+	        value:{
+	            binding:"newItem"
+	        },
+	        placeholder:{
+	            value:"Add Todo"
+	        }
+	    }
+	}
+	pageContainer.views.content.push(newTodoTextbox);
+	
+	//the add todo button
+	var addTodoButton = newButton();
+	addTodoButton.properties.text.value = "Add Todo";
+	pageContainer.views.content.push(addTodoButton);
+	
+	//the action to push a new todo to the model
+	var addTodoAction = {
+	    type:"push",
+	    bindings:{
+	        pushTo:{
+	            binding:"todos"
+	        },
+	        pushFrom:{
+	            binding:"newItem"
+	        }
+	    }
+	}
+	addTodoButton.actions.click.push(addTodoAction);
+	    
+	/////////////////////////////////
+	// END OF VIEW DEFINITION
+	/////////////////////////////////
+	    
+	    
+	
+	//add them to gaffa
+	window.gaffa.views.add(pageContainer);
+	
+	//set the default model
+	window.gaffa.model.set({
+	    todos:["stuff", "things"]
+	});
+	
+	//make gaffa pull model data from the pages queryString
+	window.gaffa.queryStringToModel();
+	
+	$(document).ready(function(){
+		//render the view
+		window.gaffa.views.render();​
+	});
+        </script>
+        
+        <style>
+        body{
+	    font-family: Arial;
+	}
+	
+	h1{
+	   font-size:2em; 
+	    margin:10px;
+	}
+	
+	body > .container{
+	    width:600px;
+	    margin: 0 auto;
+	    border:1px solid gray;
+	}
+	
+	.container{
+	    background: rgba(0,0,0,0.2);
+	    padding:5px;
+	    border-radius:3px;
+	}
+	
+	.todoList{
+	    margin-bottom:10px;
+	}
+	
+	.todoList > .container{
+	    margin-top:5px;
+	    border:1px solid gray;
+	    min-height:26px;
+	}
+	
+	.todoList button{
+	    float:right;
+	}
+	​
+        </style>
+        
+    </head>
+    <body>
+        <h1>Todos - Gaffa.js demo</h1>
+    </body>
+</html>​
