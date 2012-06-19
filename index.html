@@ -69,6 +69,7 @@
 	var filterBox = newTextbox();
 	filterBox.properties.value.binding = "todoFilter";
 	filterBox.properties.placeholder.value = "Filter Todos";
+	filterBox.updateEventName = "change keyup";
 	pageContainer.views.content.push(filterBox);
 	
 	//The list of todos
